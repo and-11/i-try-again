@@ -5,7 +5,6 @@ cmake_minimum_required(VERSION 3.26)
 set(MAIN_PROJECT_NAME "oop")
 set(MAIN_EXECUTABLE_NAME "${MAIN_PROJECT_NAME}")
 
-
 project(${MAIN_PROJECT_NAME})
 # set(CMAKE_PROJECT_VERSION_MAJOR 0)
 # set(CMAKE_PROJECT_VERSION_MINOR 0)
@@ -18,6 +17,13 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 include(cmake/Options.cmake)
 include(cmake/CompilerFlags.cmake)
 include(cmake/CopyHelper.cmake)
+
+###############################################################################
+
+# Find SFML
+# SFML_DIR can be set manually if find_package fails (e.g., -DSFML_DIR=/path/to/SFML/build)
+# Using SFML 2.5 as specified previously, or SFML 2.6.1 as found in your output
+find_package(SFML 2.5 COMPONENTS graphics window system REQUIRED)
 
 ###############################################################################
 
@@ -50,8 +56,28 @@ include(cmake/CopyHelper.cmake)
 # NOTE: update executable name in .github/workflows/cmake.yml:25 when changing name here
 add_executable(${MAIN_EXECUTABLE_NAME}
     main.cpp
+    enemy.cpp
+    entity.cpp
+    exception.cpp
+    functions.cpp
+    game.cpp
+    visitor.cpp
+    goblin.cpp
+    item.cpp
+    orc.cpp
+    player.cpp
+    player_builder.cpp
+    potion.cpp
+    skeleton.cpp
+    user_interface.cpp
+    wolf.cpp
+    crow.cpp
     generated/src/Helper.cpp
 )
+
+# Link your executable against SFML libraries
+# Changed to use direct library names as SFML::* targets were not found
+target_link_libraries(${MAIN_EXECUTABLE_NAME} PRIVATE sfml-graphics sfml-window sfml-system)
 
 # NOTE: Add all defined targets (e.g. executables, libraries, etc. )
 # NOTE: RUN_SANITIZERS is optional, if it's not present it will default to true
